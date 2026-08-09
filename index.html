@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>☕ منوی کافه</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #f5ede4;
+            color: #3d2a1a;
+            padding: 5px 20px 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #fcf8f3;
+            border-radius: 32px;
+            padding: 12px 28px 35px;
+            box-shadow: 0 15px 50px rgba(80, 50, 30, 0.12);
+            border: 1px solid rgba(200, 170, 140, 0.25);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            gap: 6px 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            /* ← جلوگیری از کوچک شدن */
+        }
+
+        .brand i {
+            font-size: 2.2rem;
+            color: #a67c52;
+            filter: drop-shadow(0 4px 8px rgba(120, 70, 30, 0.15));
+        }
+
+        .brand h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #4d2e1a;
+            background: linear-gradient(135deg, #5a3822, #8b6b4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== SEARCH ===== */
+        .search-box {
+            position: relative;
+            width: 300px;
+            /* ← اندازه ثابت */
+            flex-shrink: 0;
+            /* ← جلوگیری از کشیده شدن */
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 45px 10px 18px;
+            border: 2px solid #dcc9b6;
+            border-radius: 60px;
+            background: #fdf9f5;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.95rem;
+            color: #3d2a1a;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-box input:focus {
+            border-color: #a67c52;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(166, 124, 82, 0.12), inset 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-box input::placeholder {
+            color: #b8a392;
+            font-weight: 300;
+        }
+
+        /* ===== آیکون ذره‌بین ===== */
+        .search-box i {
+            position: absolute;
+            right: 16px;
+            top: 30%;
+            color: #a67c52;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            pointer-events: none;
+            transform: none;
+        }
+
+        /* ===== CATEGORY TABS ===== */
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 10px;
+            margin: 4px 0 12px 0;
+            padding: 0 0 8px 0;
+            border-bottom: 2px solid #e6d6c6;
+        }
+
+        .category-tab {
+            background: transparent;
+            border: 1.5px solid #dcc9b6;
+            padding: 8px 20px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #6b4f36;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 248, 240, 0.6);
+        }
+
+        .category-tab i {
+            font-size: 0.95rem;
+            opacity: 0.7;
+        }
+
+        .category-tab:hover {
+            background: #ede3d8;
+            transform: translateY(-2px);
+            border-color: #a67c52;
+        }
+
+        .category-tab.active {
+            background: #a67c52;
+            color: #fff8f0;
+            border-color: #a67c52;
+            box-shadow: 0 4px 15px rgba(166, 124, 82, 0.3);
+        }
+
+        .category-tab.active i {
+            opacity: 1;
+            color: #fff8f0;
+        }
+
+        /* ===== PRODUCT GRID ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px 20px;
+            margin-top: 0px;
+        }
+
+        /* ===== PRODUCT CARD ===== */
+        .product-card {
+            background: #fdf9f5;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(120, 80, 50, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(210, 185, 160, 0.25);
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 40px rgba(120, 80, 50, 0.15);
+            border-color: #dcc9b6;
+        }
+
+        /* ===== PRODUCT IMAGE ===== */
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #ede3d8;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        /* ===== PRODUCT INFO ===== */
+        .product-info {
+            padding: 14px 16px 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3d2a1a;
+            margin-bottom: 4px;
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: #8a7562;
+            font-weight: 300;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px dashed #e6d6c6;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #8b6b4a;
+            background: #f5ede4;
+            padding: 4px 14px;
+            border-radius: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-price small {
+            font-size: 0.65rem;
+            font-weight: 400;
+            color: #8a7562;
+        }
+
+        .btn-order {
+            background: #5a3822;
+            border: none;
+            color: #fcf6ef;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(90, 56, 34, 0.2);
+        }
+
+        .btn-order:hover {
+            background: #7a4d30;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(90, 56, 34, 0.3);
+        }
+
+        .btn-order i {
+            font-size: 0.9rem;
+        }
+
+        /* ===== NO RESULT ===== */
+        .no-result {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 1.1rem;
+            color: #8a7562;
+            background: rgba(245, 237, 228, 0.6);
+            border-radius: 40px;
+            border: 1px solid #e6d6c6;
+        }
+
+        .no-result i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 10px;
+            color: #b8a392;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #3d2a1a;
+            color: #fcf6ef;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 600;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            z-index: 999;
+            pointer-events: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-message i {
+            font-size: 1.2rem;
+            color: #e6c9b0;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            body {
+                padding: 4px 12px 20px;
+            }
+
+            .container {
+                padding: 10px 14px 25px;
+                border-radius: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+                margin-bottom: 6px;
+            }
+
+            .brand h1 {
+                font-size: 1.5rem;
+            }
+
+            .search-box {
+                width: 100%;
+                /* ← در موبایل تمام عرض */
+            }
+
+            .category-tabs {
+                justify-content: center;
+                gap: 4px 6px;
+                margin: 2px 0 10px 0;
+                padding-bottom: 6px;
+            }
+
+            .category-tab {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 16px;
+            }
+
+            .product-info {
+                padding: 10px 12px 14px;
+            }
+
+            .product-name {
+                font-size: 0.95rem;
+            }
+
+            .product-price {
+                font-size: 0.9rem;
+                padding: 3px 10px;
+            }
+
+            .btn-order {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 450px) {
+            body {
+                padding: 3px 6px 15px;
+            }
+
+            .container {
+                padding: 8px 8px 16px;
+                border-radius: 14px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .brand i {
+                font-size: 1.6rem;
+            }
+
+            .brand h1 {
+                font-size: 1.2rem;
+            }
+
+            .search-box input {
+                padding: 8px 40px 8px 14px;
+                font-size: 0.85rem;
+            }
+
+            .search-box i {
+                right: 14px;
+                font-size: 1rem;
+            }
+
+            .category-tab {
+                font-size: 0.65rem;
+                padding: 4px 8px;
+                gap: 3px;
+            }
+
+            .category-tab i {
+                font-size: 0.7rem;
+            }
+
+            .product-price {
+                font-size: 0.75rem;
+                padding: 2px 8px;
+            }
+
+            .btn-order {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+                gap: 3px;
+            }
+
+            .btn-order i {
+                font-size: 0.6rem;
+            }
+
+            .product-name {
+                font-size: 0.8rem;
+            }
+
+            .product-desc {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="brand">
+                <i class="fas fa-mug-saucer"></i>
+                <h1>کافه ایرانی</h1>
+            </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="جستجو..." />
+            </div>
+        </header>
+
+        <!-- ===== CATEGORY TABS ===== -->
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="all">
+                <i class="fas fa-th-large"></i> همه
+            </button>
+            <button class="category-tab" data-category="hot">
+                <i class="fas fa-fire"></i> گرم
+            </button>
+            <button class="category-tab" data-category="cold">
+                <i class="fas fa-snowflake"></i> سرد
+            </button>
+            <button class="category-tab" data-category="food">
+                <i class="fas fa-utensils"></i> غذا
+            </button>
+            <button class="category-tab" data-category="dessert">
+                <i class="fas fa-cake"></i> دسر
+            </button>
+        </div>
+
+        <!-- ===== PRODUCT GRID ===== -->
+        <div class="product-grid" id="productGrid"></div>
+
+        <!-- ===== NO RESULT ===== -->
+        <div class="no-result" id="noResult" style="display:none;">
+            <i class="fas fa-mug-hot"></i>
+            موردی پیدا نشد 😕
+        </div>
+
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-message" id="toastMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText">به سبد خرید اضافه شد!</span>
+    </div>
+
+    <script>
+        // ================================================================
+        //  داده‌های محصولات
+        // ================================================================
+        const products = [{
+            id: 1,
+            name: 'اسپرسو',
+            desc: 'قهوه غلیظ و اصیل ایتالیایی',
+            price: 65000,
+            category: 'hot',
+            image: 'esp.webp'
+        }, {
+            id: 2,
+            name: 'کاپوچینو',
+            desc: 'اسپرسو با شیر بخار و کف شیر',
+            price: 78000,
+            category: 'hot',
+            image: 'capo.webp'
+        }, {
+            id: 3,
+            name: 'لاته',
+            desc: 'اسپرسو با شیر بخار، لطیف و کرم‌دار',
+            price: 82000,
+            category: 'hot',
+            image: 'late.webp'
+        }, {
+            id: 4,
+            name: 'موکا',
+            desc: 'اسپرسو با شکلات و شیر بخار',
+            price: 89000,
+            category: 'hot',
+            image: 'moka.webp'
+        }, {
+            id: 5,
+            name: 'چای سیاه',
+            desc: 'چای دم‌کشیده با طعم دارچین و میخک',
+            price: 55000,
+            category: 'hot',
+            image: 'tea.webp'
+        }, {
+            id: 6,
+            name: 'شکلات داغ',
+            desc: 'شکلات ذوب شده با شیر، خامه و مارشمالو',
+            price: 79000,
+            category: 'hot',
+            image: 'hot.webp'
+        }, {
+            id: 7,
+            name: 'آیس لاته',
+            desc: 'لاته سرد با یخ و شیر تازه',
+            price: 85000,
+            category: 'cold',
+            image: 'icel.webp'
+        }, {
+            id: 8,
+            name: 'آیس موکا',
+            desc: 'موکای سرد با شکلات و یخ',
+            price: 92000,
+            category: 'cold',
+            image: 'icem.webp'
+        }, {
+            id: 9,
+            name: 'اسموتی توت‌فرنگی',
+            desc: 'اسموتی شیرین با توت‌فرنگی و ماست',
+            price: 88000,
+            category: 'cold',
+            image: 'smoty.webp'
+        }, {
+            id: 10,
+            name: 'لیموناد',
+            desc: 'لیموناد طبیعی با نعناع و یخ',
+            price: 62000,
+            category: 'cold',
+            image: 'lim.webp'
+        }, {
+            id: 11,
+            name: 'فراپه قهوه',
+            desc: 'قهوه سرد فراپه با خامه',
+            price: 89000,
+            category: 'cold',
+            image: 'frape.webp'
+        }, {
+            id: 12,
+            name: 'کروسان',
+            desc: 'کروسان ترد و پوک با کره',
+            price: 72000,
+            category: 'food',
+            image: 'cros.webp'
+        }, {
+            id: 13,
+            name: 'کیک شکلاتی',
+            desc: 'کیک نرم با شکلات تلخ',
+            price: 76000,
+            category: 'food',
+            image: 'cake.webp'
+        }, {
+            id: 14,
+            name: 'دونات',
+            desc: 'دونات رنگارنگ با پودر قند',
+            price: 48000,
+            category: 'food',
+            image: 'donat.webp'
+        }, {
+            id: 15,
+            name: 'مافین بلوبری',
+            desc: 'مافین با بلوبری و گردو',
+            price: 67000,
+            category: 'food',
+            image: 'mafin.webp'
+        }, {
+            id: 16,
+            name: 'سالاد سزار',
+            desc: 'سالاد تازه با سس سزار',
+            price: 82000,
+            category: 'food',
+            image: 'sezar.webp'
+        }, {
+            id: 17,
+            name: 'چیزکیک',
+            desc: 'چیزکیک نیویورکی با سس توت',
+            price: 92000,
+            category: 'dessert',
+            image: 'chees.webp'
+        }, {
+            id: 18,
+            name: 'تیرامیسو',
+            desc: 'دسر ایتالیایی با قهوه و ماسکارپونه',
+            price: 105000,
+            category: 'dessert',
+            image: 'tira.webp'
+        }, {
+            id: 19,
+            name: 'پاناکوتا',
+            desc: 'پاناکوتای وانیلی با سس توت‌فرنگی',
+            price: 86000,
+            category: 'dessert',
+            image: 'pana.webp'
+        }, {
+            id: 20,
+            name: 'ماکارون',
+            desc: 'ماکارون رنگی با کرم وانیلی',
+            price: 68000,
+            category: 'dessert',
+            image: 'makaron.webp'
+        }, {
+            id: 21,
+            name: 'کرم کارامل',
+            desc: 'کرم کارامل با سس کارامل',
+            price: 79000,
+            category: 'dessert',
+            image: 'caramel.webp'
+        }];
+
+        // ================================================================
+        const grid = document.getElementById('productGrid');
+        const noResult = document.getElementById('noResult');
+        const searchInput = document.getElementById('searchInput');
+        const tabs = document.querySelectorAll('.category-tab');
+        const toastMsg = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+
+        let currentCategory = 'all';
+        let currentSearch = '';
+
+        function renderProducts() {
+            const filtered = products.filter(p => {
+                const matchCategory = currentCategory === 'all' || p.category === currentCategory;
+                const matchSearch = p.name.includes(currentSearch) ||
+                    p.desc.includes(currentSearch);
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                noResult.style.display = 'block';
+            } else {
+                noResult.style.display = 'none';
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                    <div class="product-card" data-id="${p.id}">
+                        <div class="product-image">
+                            <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/ede3d8/8a7562?text=${p.name}'" />
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-desc">${p.desc}</div>
+                            <div class="product-bottom">
+                                <span class="product-price">
+                                    ${p.price.toLocaleString()} <small>تومان</small>
+                                </span>
+                                <button class="btn-order" data-id="${p.id}">
+                                    <i class="fas fa-cart-plus"></i> سفارش
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        let toastTimeout;
+
+        function showToast(text) {
+            toastText.textContent = text;
+            toastMsg.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toastMsg.classList.remove('show');
+            }, 2200);
+        }
+
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-order');
+            if (!btn) return;
+            const id = parseInt(btn.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (product) {
+                showToast(`${product.name} به سبد خرید اضافه خرید `);
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.trim();
+            renderProducts();
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                renderProducts();
+            });
+        });
+
+        renderProducts();
+    </script>
+</body>
+</html>
