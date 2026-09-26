@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>پنل مدیریت منو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family:'Vazirmatn', sans-serif;
+        background:#f5ede4;
+        color:#3d2a1a;
+        padding:20px;
+        min-height:100vh;
+    }
+    .wrap { max-width:960px; margin:0 auto; }
+
+    .top {
+        display:flex; align-items:center; justify-content:space-between;
+        margin-bottom:18px; flex-wrap:wrap; gap:10px;
+    }
+    .top h1 { font-size:1.5rem; font-weight:900; color:#4d2e1a; display:flex; align-items:center; gap:8px; }
+    .top h1 i { color:#a67c52; }
+
+    .status-pill {
+        font-size:0.8rem; font-weight:600; padding:5px 14px; border-radius:40px;
+        display:flex; align-items:center; gap:6px;
+    }
+    .status-pill.ok { background:#e5f0e2; color:#3d6b2f; }
+    .status-pill.off { background:#f0e2e2; color:#8b3a2f; }
+
+    .card {
+        background:#fcf8f3; border:1px solid rgba(200,170,140,0.3);
+        border-radius:22px; padding:22px; box-shadow:0 10px 35px rgba(80,50,30,0.08);
+        margin-bottom:20px;
+    }
+    .card h2 {
+        font-size:1.05rem; font-weight:700; margin-bottom:14px;
+        color:#5a3822; display:flex; align-items:center; gap:8px;
+    }
+
+    label { display:block; font-size:0.82rem; font-weight:600; color:#6b4f36; margin-bottom:5px; }
+    input, select, textarea {
+        width:100%; padding:10px 14px; border:1.5px solid #dcc9b6; border-radius:14px;
+        background:#fdf9f5; font-family:'Vazirmatn',sans-serif; font-size:0.9rem; color:#3d2a1a;
+        outline:none; transition:.2s;
+    }
+    input:focus, select:focus, textarea:focus { border-color:#a67c52; background:#fff; }
+    textarea { resize:vertical; min-height:60px; }
+
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .field { margin-bottom:12px; }
+
+    .btn {
+        border:none; border-radius:40px; padding:10px 22px; font-family:'Vazirmatn',sans-serif;
+        font-weight:700; font-size:0.9rem; cursor:pointer; display:inline-flex; align-items:center;
+        gap:7px; transition:.2s;
+    }
+    .btn-primary { background:#5a3822; color:#fcf6ef; box-shadow:0 4px 12px rgba(90,56,34,0.25); }
+    .btn-primary:hover { background:#7a4d30; }
+    .btn-ghost { background:transparent; border:1.5px solid #dcc9b6; color:#6b4f36; }
+    .btn-ghost:hover { background:#ede3d8; }
+    .btn-danger { background:#8b3a2f; color:#fff2ee; }
+    .btn-danger:hover { background:#a34738; }
+    .btn:disabled { opacity:0.5; cursor:not-allowed; }
+
+    .item-row {
+        display:flex; align-items:center; gap:12px; padding:12px 10px;
+        border-bottom:1px dashed #e6d6c6;
+    }
+    .item-row:last-child { border-bottom:none; }
+    .item-thumb {
+        width:48px; height:48px; border-radius:12px; background:#ede3d8; flex-shrink:0;
+        display:flex; align-items:center; justify-content:center; color:#a67c52; font-size:1.1rem;
+        overflow:hidden;
+    }
+    .item-thumb img { width:100%; height:100%; object-fit:cover; }
+    .item-info { flex:1; min-width:0; }
+    .item-name { font-weight:700; font-size:0.95rem; }
+    .item-meta { font-size:0.78rem; color:#8a7562; }
+    .item-actions { display:flex; gap:6px; flex-shrink:0; }
+    .icon-btn {
+        width:34px; height:34px; border-radius:10px; border:1.5px solid #dcc9b6; background:#fdf9f5;
+        color:#6b4f36; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        transition:.2s;
+    }
+    .icon-btn:hover { background:#ede3d8; }
+    .icon-btn.del:hover { background:#f0e2e2; color:#8b3a2f; border-color:#d9b3aa; }
+
+    .toast {
+        position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(80px);
+        background:#3d2a1a; color:#fcf6ef; padding:12px 26px; border-radius:60px; font-weight:600;
+        font-size:0.9rem; opacity:0; transition:.4s; z-index:999; display:flex; align-items:center; gap:8px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast.err i { color:#e8a49a; }
+    .toast i { color:#e6c9b0; }
+
+    .empty { text-align:center; padding:30px; color:#8a7562; font-size:0.9rem; }
+    .hint { font-size:0.78rem; color:#8a7562; margin-top:6px; line-height:1.6; }
+    .hint a { color:#a67c52; }
+
+    @media (max-width:600px) {
+        .grid2 { grid-template-columns:1fr; }
+        .item-row { flex-wrap:wrap; }
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="top">
+        <h1><i class="fas fa-mug-saucer"></i> پنل مدیریت منو</h1>
+        <span class="status-pill off" id="statusPill"><i class="fas fa-circle"></i> اتصال برقرار نیست</span>
+    </div>
+
+    <!-- ===== اتصال به گیت‌هاب ===== -->
+    <div class="card" id="connectCard">
+        <h2><i class="fas fa-key"></i> اتصال به مخزن گیت‌هاب</h2>
+        <div class="grid2">
+            <div class="field">
+                <label>نام کاربری / سازمان (owner)</label>
+                <input id="ghOwner" placeholder="مثلاً: yourusername" />
+            </div>
+            <div class="field">
+                <label>نام مخزن (repo)</label>
+                <input id="ghRepo" placeholder="مثلاً: cafe-menu" />
+            </div>
+            <div class="field">
+                <label>مسیر فایل منو</label>
+                <input id="ghPath" placeholder="menu.json" value="menu.json" />
+            </div>
+            <div class="field">
+                <label>شاخه (branch)</label>
+                <input id="ghBranch" placeholder="main" value="main" />
+            </div>
+        </div>
+        <div class="field">
+            <label>توکن دسترسی گیت‌هاب (Personal Access Token)</label>
+            <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+            <div class="hint">
+                از GitHub → Settings → Developer settings → Personal access tokens یک توکن با دسترسی
+                <b>فقط همین ریپو</b> و مجوز <b>Contents: Read and write</b> بساز. توکن فقط توی همین مرورگر
+                (localStorage) ذخیره می‌شه و به هیچ سروری جز GitHub ارسال نمی‌شه.
+            </div>
+        </div>
+        <button class="btn btn-primary" id="btnConnect"><i class="fas fa-plug"></i> اتصال و بارگذاری منو</button>
+    </div>
+
+    <!-- ===== فرم افزودن/ویرایش ===== -->
+    <div class="card" id="formCard" style="display:none;">
+        <h2><i class="fas fa-pen"></i> <span id="formTitle">افزودن آیتم جدید</span></h2>
+        <div class="grid2">
+            <div class="field">
+                <label>نام</label>
+                <input id="fName" placeholder="مثلاً: لاته" />
+            </div>
+            <div class="field">
+                <label>قیمت (تومان)</label>
+                <input id="fPrice" type="number" placeholder="82000" />
+            </div>
+            <div class="field">
+                <label>دسته‌بندی</label>
+                <select id="fCategory">
+                    <option value="hot">گرم</option>
+                    <option value="cold">سرد</option>
+                    <option value="food">غذا</option>
+                    <option value="dessert">دسر</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>نام فایل عکس</label>
+                <input id="fImage" placeholder="late.webp" />
+            </div>
+        </div>
+        <div class="field">
+            <label>توضیحات</label>
+            <textarea id="fDesc" placeholder="اسپرسو با شیر بخار، لطیف و کرم‌دار"></textarea>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-primary" id="btnSaveItem"><i class="fas fa-check"></i> ذخیره آیتم</button>
+            <button class="btn btn-ghost" id="btnCancelEdit" style="display:none;">انصراف از ویرایش</button>
+        </div>
+    </div>
+
+    <!-- ===== لیست آیتم‌ها ===== -->
+    <div class="card" id="listCard" style="display:none;">
+        <h2><i class="fas fa-list"></i> آیتم‌های منو (<span id="itemCount">0</span>)</h2>
+        <div id="itemList"></div>
+    </div>
+
+    <!-- ===== ذخیره روی گیت‌هاب ===== -->
+    <div class="card" id="publishCard" style="display:none;">
+        <h2><i class="fas fa-cloud-arrow-up"></i> انتشار تغییرات</h2>
+        <p class="hint" style="margin-bottom:12px;">تغییرات فقط توی همین صفحه اعمال شده‌ان. برای اینکه روی سایت واقعی دیده بشن، باید روی گیت‌هاب کامیت بشن.</p>
+        <button class="btn btn-primary" id="btnPublish"><i class="fas fa-upload"></i> ذخیره روی گیت‌هاب</button>
+    </div>
+
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastText"></span></div>
+
+<script>
+const els = {
+    owner: document.getElementById('ghOwner'),
+    repo: document.getElementById('ghRepo'),
+    path: document.getElementById('ghPath'),
+    branch: document.getElementById('ghBranch'),
+    token: document.getElementById('ghToken'),
+    btnConnect: document.getElementById('btnConnect'),
+    statusPill: document.getElementById('statusPill'),
+    formCard: document.getElementById('formCard'),
+    listCard: document.getElementById('listCard'),
+    publishCard: document.getElementById('publishCard'),
+    itemList: document.getElementById('itemList'),
+    itemCount: document.getElementById('itemCount'),
+    fName: document.getElementById('fName'),
+    fPrice: document.getElementById('fPrice'),
+    fCategory: document.getElementById('fCategory'),
+    fImage: document.getElementById('fImage'),
+    fDesc: document.getElementById('fDesc'),
+    formTitle: document.getElementById('formTitle'),
+    btnSaveItem: document.getElementById('btnSaveItem'),
+    btnCancelEdit: document.getElementById('btnCancelEdit'),
+    btnPublish: document.getElementById('btnPublish'),
+    toast: document.getElementById('toast'),
+    toastText: document.getElementById('toastText'),
+};
+
+let items = [];
+let fileSha = null;   // لازم برای آپدیت فایل روی گیت‌هاب
+let editingId = null;
+let dirty = false;
+
+const catLabel = { hot:'گرم', cold:'سرد', food:'غذا', dessert:'دسر' };
+
+function showToast(text, isErr) {
+    els.toastText.textContent = text;
+    els.toast.classList.toggle('err', !!isErr);
+    els.toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => els.toast.classList.remove('show'), 2600);
+}
+
+// ===== بارگذاری تنظیمات ذخیره‌شده =====
+(function loadSaved() {
+    const s = JSON.parse(localStorage.getItem('menuAdminConfig') || '{}');
+    if (s.owner) els.owner.value = s.owner;
+    if (s.repo) els.repo.value = s.repo;
+    if (s.path) els.path.value = s.path;
+    if (s.branch) els.branch.value = s.branch;
+    if (s.token) els.token.value = s.token;
+})();
+
+function saveConfig() {
+    localStorage.setItem('menuAdminConfig', JSON.stringify({
+        owner: els.owner.value.trim(),
+        repo: els.repo.value.trim(),
+        path: els.path.value.trim() || 'menu.json',
+        branch: els.branch.value.trim() || 'main',
+        token: els.token.value.trim(),
+    }));
+}
+
+function apiUrl() {
+    const o = els.owner.value.trim();
+    const r = els.repo.value.trim();
+    const p = els.path.value.trim() || 'menu.json';
+    return `https://api.github.com/repos/${o}/${r}/contents/${p}`;
+}
+
+function authHeaders() {
+    return {
+        'Authorization': `Bearer ${els.token.value.trim()}`,
+        'Accept': 'application/vnd.github+json',
+    };
+}
+
+// ===== اتصال و بارگذاری فایل از گیت‌هاب =====
+els.btnConnect.addEventListener('click', async () => {
+    const owner = els.owner.value.trim();
+    const repo = els.repo.value.trim();
+    const branch = els.branch.value.trim() || 'main';
+    const token = els.token.value.trim();
+
+    if (!owner || !repo || !token) {
+        showToast('لطفاً نام کاربری، مخزن و توکن رو وارد کن', true);
+        return;
+    }
+
+    saveConfig();
+    els.btnConnect.disabled = true;
+    els.btnConnect.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال اتصال...';
+
+    try {
+        const res = await fetch(`${apiUrl()}?ref=${branch}`, { headers: authHeaders() });
+
+        if (res.status === 404) {
+            // فایل هنوز وجود نداره - از صفر شروع می‌کنیم
+            items = [];
+            fileSha = null;
+            showToast('فایل menu.json پیدا نشد. یک فایل جدید ساخته می‌شه.');
+        } else if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || `خطای ${res.status}`);
+        } else {
+            const data = await res.json();
+            fileSha = data.sha;
+            const content = decodeURIComponent(escape(atob(data.content)));
+            items = JSON.parse(content);
+            showToast('منو با موفقیت بارگذاری شد');
+        }
+
+        els.statusPill.className = 'status-pill ok';
+        els.statusPill.innerHTML = '<i class="fas fa-circle"></i> متصل';
+        els.formCard.style.display = 'block';
+        els.listCard.style.display = 'block';
+        els.publishCard.style.display = 'block';
+        dirty = false;
+        renderList();
+    } catch (e) {
+        showToast('اتصال ناموفق: ' + e.message, true);
+        els.statusPill.className = 'status-pill off';
+        els.statusPill.innerHTML = '<i class="fas fa-circle"></i> اتصال برقرار نیست';
+    } finally {
+        els.btnConnect.disabled = false;
+        els.btnConnect.innerHTML = '<i class="fas fa-plug"></i> اتصال و بارگذاری منو';
+    }
+});
+
+// ===== رندر لیست آیتم‌ها =====
+function renderList() {
+    els.itemCount.textContent = items.length;
+    if (items.length === 0) {
+        els.itemList.innerHTML = '<div class="empty"><i class="fas fa-mug-hot" style="font-size:1.8rem; display:block; margin-bottom:8px;"></i>هنوز آیتمی اضافه نشده</div>';
+        return;
+    }
+    els.itemList.innerHTML = items.map(p => `
+        <div class="item-row" data-id="${p.id}">
+            <div class="item-thumb"><img src="${p.image}" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas fa-image\\'></i>'" /></div>
+            <div class="item-info">
+                <div class="item-name">${p.name}</div>
+                <div class="item-meta">${catLabel[p.category] || p.category} · ${Number(p.price).toLocaleString()} تومان</div>
+            </div>
+            <div class="item-actions">
+                <button class="icon-btn edit" title="ویرایش"><i class="fas fa-pen"></i></button>
+                <button class="icon-btn del" title="حذف"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+els.itemList.addEventListener('click', (e) => {
+    const row = e.target.closest('.item-row');
+    if (!row) return;
+    const id = parseInt(row.dataset.id);
+    const item = items.find(p => p.id === id);
+    if (!item) return;
+
+    if (e.target.closest('.edit')) {
+        editingId = id;
+        els.fName.value = item.name;
+        els.fPrice.value = item.price;
+        els.fCategory.value = item.category;
+        els.fImage.value = item.image;
+        els.fDesc.value = item.desc;
+        els.formTitle.textContent = 'ویرایش: ' + item.name;
+        els.btnCancelEdit.style.display = 'inline-flex';
+        els.formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (e.target.closest('.del')) {
+        if (confirm(`آیتم «${item.name}» حذف بشه؟`)) {
+            items = items.filter(p => p.id !== id);
+            dirty = true;
+            renderList();
+            showToast('آیتم حذف شد (برای ثبت نهایی، منتشر کن)');
+        }
+    }
+});
+
+function resetForm() {
+    editingId = null;
+    els.fName.value = '';
+    els.fPrice.value = '';
+    els.fCategory.value = 'hot';
+    els.fImage.value = '';
+    els.fDesc.value = '';
+    els.formTitle.textContent = 'افزودن آیتم جدید';
+    els.btnCancelEdit.style.display = 'none';
+}
+
+els.btnCancelEdit.addEventListener('click', resetForm);
+
+els.btnSaveItem.addEventListener('click', () => {
+    const name = els.fName.value.trim();
+    const price = parseInt(els.fPrice.value);
+    const category = els.fCategory.value;
+    const image = els.fImage.value.trim();
+    const desc = els.fDesc.value.trim();
+
+    if (!name || !price || !image) {
+        showToast('نام، قیمت و نام فایل عکس الزامی‌ان', true);
+        return;
+    }
+
+    if (editingId) {
+        const item = items.find(p => p.id === editingId);
+        Object.assign(item, { name, price, category, image, desc });
+        showToast('آیتم به‌روزرسانی شد (برای ثبت نهایی، منتشر کن)');
+    } else {
+        const newId = items.length ? Math.max(...items.map(p => p.id)) + 1 : 1;
+        items.push({ id: newId, name, desc, price, category, image });
+        showToast('آیتم اضافه شد (برای ثبت نهایی، منتشر کن)');
+    }
+
+    dirty = true;
+    renderList();
+    resetForm();
+});
+
+// ===== انتشار روی گیت‌هاب =====
+els.btnPublish.addEventListener('click', async () => {
+    const branch = els.branch.value.trim() || 'main';
+    els.btnPublish.disabled = true;
+    els.btnPublish.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال ارسال...';
+
+    try {
+        const content = JSON.stringify(items, null, 2);
+        const b64 = btoa(unescape(encodeURIComponent(content)));
+
+        const body = {
+            message: `به‌روزرسانی منو - ${new Date().toLocaleString('fa-IR')}`,
+            content: b64,
+            branch: branch,
+        };
+        if (fileSha) body.sha = fileSha;
+
+        const res = await fetch(apiUrl(), {
+            method: 'PUT',
+            headers: { ...authHeaders(), 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || `خطای ${res.status}`);
+        }
+
+        const data = await res.json();
+        fileSha = data.content.sha;
+        dirty = false;
+        showToast('با موفقیت روی گیت‌هاب ذخیره شد ✅');
+    } catch (e) {
+        showToast('انتشار ناموفق: ' + e.message, true);
+    } finally {
+        els.btnPublish.disabled = false;
+        els.btnPublish.innerHTML = '<i class="fas fa-upload"></i> ذخیره روی گیت‌هاب';
+    }
+});
+
+window.addEventListener('beforeunload', (e) => {
+    if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>

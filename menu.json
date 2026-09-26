@@ -1,0 +1,23 @@
+[
+  { "id": 1, "name": "اسپرسو", "desc": "قهوه غلیظ و اصیل ایتالیایی", "price": 65000, "category": "hot", "image": "esp.webp" },
+  { "id": 2, "name": "کاپوچینو", "desc": "اسپرسو با شیر بخار و کف شیر", "price": 78000, "category": "hot", "image": "capo.webp" },
+  { "id": 3, "name": "لاته", "desc": "اسپرسو با شیر بخار، لطیف و کرم‌دار", "price": 82000, "category": "hot", "image": "late.webp" },
+  { "id": 4, "name": "موکا", "desc": "اسپرسو با شکلات و شیر بخار", "price": 89000, "category": "hot", "image": "moka.webp" },
+  { "id": 5, "name": "چای سیاه", "desc": "چای دم‌کشیده با طعم دارچین و میخک", "price": 55000, "category": "hot", "image": "tea.webp" },
+  { "id": 6, "name": "شکلات داغ", "desc": "شکلات ذوب شده با شیر، خامه و مارشمالو", "price": 79000, "category": "hot", "image": "hot.webp" },
+  { "id": 7, "name": "آیس لاته", "desc": "لاته سرد با یخ و شیر تازه", "price": 85000, "category": "cold", "image": "icel.webp" },
+  { "id": 8, "name": "آیس موکا", "desc": "موکای سرد با شکلات و یخ", "price": 92000, "category": "cold", "image": "icem.webp" },
+  { "id": 9, "name": "اسموتی توت‌فرنگی", "desc": "اسموتی شیرین با توت‌فرنگی و ماست", "price": 88000, "category": "cold", "image": "smoty.webp" },
+  { "id": 10, "name": "لیموناد", "desc": "لیموناد طبیعی با نعناع و یخ", "price": 62000, "category": "cold", "image": "lim.webp" },
+  { "id": 11, "name": "فراپه قهوه", "desc": "قهوه سرد فراپه با خامه", "price": 89000, "category": "cold", "image": "frape.webp" },
+  { "id": 12, "name": "کروسان", "desc": "کروسان ترد و پوک با کره", "price": 72000, "category": "food", "image": "cros.webp" },
+  { "id": 13, "name": "کیک شکلاتی", "desc": "کیک نرم با شکلات تلخ", "price": 76000, "category": "food", "image": "cake.webp" },
+  { "id": 14, "name": "دونات", "desc": "دونات رنگارنگ با پودر قند", "price": 48000, "category": "food", "image": "donat.webp" },
+  { "id": 15, "name": "مافین بلوبری", "desc": "مافین با بلوبری و گردو", "price": 67000, "category": "food", "image": "mafin.webp" },
+  { "id": 16, "name": "سالاد سزار", "desc": "سالاد تازه با سس سزار", "price": 82000, "category": "food", "image": "sezar.webp" },
+  { "id": 17, "name": "چیزکیک", "desc": "چیزکیک نیویورکی با سس توت", "price": 92000, "category": "dessert", "image": "chees.webp" },
+  { "id": 18, "name": "تیرامیسو", "desc": "دسر ایتالیایی با قهوه و ماسکارپونه", "price": 105000, "category": "dessert", "image": "tira.webp" },
+  { "id": 19, "name": "پاناکوتا", "desc": "پاناکوتای وانیلی با سس توت‌فرنگی", "price": 86000, "category": "dessert", "image": "pana.webp" },
+  { "id": 20, "name": "ماکارون", "desc": "ماکارون رنگی با کرم وانیلی", "price": 68000, "category": "dessert", "image": "makaron.webp" },
+  { "id": 21, "name": "کرم کارامل", "desc": "کرم کارامل با سس کارامل", "price": 79000, "category": "dessert", "image": "caramel.webp" }
+]
